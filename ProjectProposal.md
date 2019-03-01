@@ -1,0 +1,51 @@
+# Final Project Description
+### Hari Kaushik, Anuraag Polisetty, Anant Rajeev, Kyle Wistrand
+
+## Purpose
+
+The overarching purpose of our research project is to determine the various factors that a professional football club considers when deciding the overall salary of a particular professional footballer (soccer player) part of that club. This is an important undertaking because of a few different reasons. First off, our research could eventually indicate what potential factors clubs consider when deciding how much to pay a player. Second, on a different and deeper layer, our research might help to uncover systematic biases that clubs may have when deciding how much to pay a player. We may be able to find that clubs might sometimes use unethical means to determine how much one of their players should be paid. Based on the different predictive variables that our research intends on using, we may be able to answer more and more questions along the way.
+
+Unsurprisingly, there has been a substantial amount of research into the salaries of football players. Not only is the glamor of a a highly-paid footballer something that captivates the imagination, but the amount of data that is being collected on players and matches today is astonishing, and the access to this data is largely free and open. Within the machine learning field, researchers have used a variety of methods, including Additive  Regression, Decision Table, Nearest Neighbor, K*, Locally Weighted  Learning with Naive Bayes and Linear regression classifiers, Random Committee, and Random Trees. The highest success one researcher found was using Random Committee, with a Pearson correlation between the predicted and actual football player weekly wage of 87%, and the lowest using Random Tree with a Pearson correlation of only 53% (Yaldo, 2017). Another researcher was able to obtain a score of 79% using a Random Forest regressor. This researcher also points out the significance of position in determining the salary, as the labor market for some positions is tighter than others, thereby increasing the economic scarcity of any given player, and hypothetically increasing their wage. Additionally, some positions might just be more desirable than others, leading to the same outcome (Jabarivasal, 2018). Another researcher used correlation analysis to decide what features to include in the model, and used an imputer to fill in missing values. Using Support Vector Regression and hyperparameters tuning, they were able to bring the score up from 43% without tuning, to 67% with it. They found that using C=100 and epsilon=0.5 were the best parameters to improve accuracy of their SVR model (Tahamtan, 2017).
+What specific hypothesis (hypotheses) are you going to test?
+The specific hypothesis that we are testing in our research is that there isn’t a correlation between any of the variables in our data set and player wage. Furthermore, as a branch of this hypothesis we intend to disprove this null hypothesis and find correlations between certain variables and player wage whether they be positive or negative. While testing this hypothesis, we can also be privy to more answers to more hypotheses that involve certain variables potentially related to player wage. ---CONTINUE---
+
+
+## Dataset
+We plan to use the “FIFA 19 Complete player dataset” from Kaggle (https://www.kaggle.com/karangadiya/fifa19?fbclid=IwAR383REV8mjYQ_o5sIXMZPC1pLbsf0IAW9EOwygLARc6fKydH48LMNDCgEQ). This particular data set doesn’t require us to use many more resources because there are already so many factors related to their playing ability that would be considered in a player’s salary existing in the data set itself. This particular data set that we will extract variables from to predict player wage is from EA Sports FIFA 19 and the data that EA has compiled on every professional footballer included in their game. These attributes then translate into how the player acts in the in-game gameplay and is reflective of the player’s skill in real life gameplay. Essentially, this data set includes attributes that accurately reflect the skill of any footballer.
+What statistical and machine learning methods do you plan on using to test your hypothesis?
+
+**NEED STATISTICAL METHODS**
+
+We will likely try at least Random Forest regressor and Support Vector Regression models in our machine learning, since these models proved useful for researchers in the past on similar datasets. For each of these models, we will utilize data normalization, grid search, hyperparameterization and cross-validation to ensure that we can maximize our score in the end. We will likely use mean absolute error to assess score, as the absolute difference in the predicted and actual wages is what we’re interested in minimizing.
+
+
+Our target audience consists of sports fans interested in learning what drives the wage structure of professional sports. Furthermore, sports fans are interested in the data to evaluate the management of
+What should your audience learn from your resource? Consider specific questions they may want to answer.
+At the surface level, any readers of our research will be able to learn about potential variables that professional football clubs potentially consider when they determine the salary of a professional football player. Beyond just that, we expect our audience to learn about the general nature of how professional sports’ salary methods are structured. We want our readers to be able to take what we displayed in our research and then look deeper at various other professional sports to better understand how they use the statistics and attributes of a particular player to craft a salary around that, if at all. Some questions that we might answer for our readers could be, “Do players get paid more based on if they’re left or right footed?”, or “How much does a player’s race get factored into the club’s decision if they should be signed or not?” With the variables we plan to use in our data set, we can get closer to answering so many questions surrounding this topic.
+
+
+
+
+
+
+
+
+
+
+
+## Technical Description
+
+Our final web resource will be an HTML page compiled with Jupyter notebooks as this is the most viable and organized format in which to present our analysis. A challenge that we foresee in our data is inconsistent values in features such as _body type_. For example, some players’ body types are listed simply as ‘Messi’ or ‘Ronaldo’ for their respective players, which might imply that they have their own unique body types. However, these unique values are very few in number and probably won’t affect the overall analysis. Another specific data challenge will be the analysis of subjective values for features such as _Aggression_, _Composure_, and _GKReflexes_.
+
+In terms of data collection, all of the data that we will use in our analysis is included in the Kaggle dataset. However, in terms of actually managing the data, there are a few missing values on some of the columns that we must keep track of and fill in. To manage missing data, which is likely one of the only data cleaning methods we will have to employ, we will first have to determine whether or not this is a quantifiable column or a qualitative column. If the column is quantitative, we will fill in the missing value with the mean of all the players in the same league in the same position. On the other hand, if the column is qualitative, we will take the majority value of all the players in the same league in the same position. What makes these methods a challenge is the uncertainty that they are inherently inaccurate. We can only trust that the trend that we are trying to expose will overcome the inaccuracies that will exist in a data set this large.
+
+The biggest new technical skill that we will need to pick up is learning how to implement new types of regression in order to accurately model and predict player wages through existing variables. We will obviously be using several different mechanisms of predictive analysis including K-Nearest Neighbors, multivariate regression, and decision trees.
+
+After prepping our data by filling in missing values, we can begin our modelling approach by conducting an exploration of the data. We will start by plotting our data using a visualization such as a histogram in order to analyze the distribution of certain features, such as overall rating, positioning, and stamina. We can also use scatter plots to see relationships between variables such as correlations between international reputation and salary wages.  In addition, we might even have to split data into separate groups according to clubs or countries in order to see higher correlations between values according to wages. We can then calculate correlations between these factors and use a forward selection algorithm to determine which features have the greatest effect on our dependent variable. By developing a model with algorithms such as K-Nearest Neighbors Regressors, Multivariate regression, and Decision trees, we can train our model to predict salaries of players given test data.
+
+A major challenge with comparing wages across leagues is the inconsistency between the available funds teams have to spend on players of different quality. For example, the Chinese Super League has had a long history of paying foreign players incredible sums of money in order to attract them away from the more competitive European leagues. It is likely that the league in which a player plays presents itself as a confounding variable that needs to be somehow enumerated and incorporated into the model. Furthermore, it would be even better to create a more normalized comparable wage metric that takes into account the median/mean wage of the league the player plays in.
+
+References
+Jabarivasal, A. (2018, October 1). Predicting footballers wages using FIFA stats. Retrieved February 28, 2019, from https://www.kaggle.com/amirjab21/predicting-footballers-wages-using-fifa-stats
+Tahamtan, S. (2017, December 11). Player Wage Prediction. Retrieved February 28, 2019, from https://www.kaggle.com/stahamtan/player-wage-prediction
+Yaldo, L., & Shamir, L. (2017). Computational Estimation of Football Player Wages, International Journal of Computer Science in Sport, 16(1), 18-38. doi: https://doi.org/10.1515/ijcss-2017-0002
