@@ -24,3 +24,10 @@ def prepared_df():
                       'CDM', 'RDM', 'RWB', 'LB', 'LCB', 'CB', 'RCB', 'RB']
     df.drop(dropped_features, axis=1)
     return df
+
+def prepare_heights():
+    temp = prepared_df()
+    heights = temp['Height'].str.split("\'")
+    inches = [12 * int(i[0]) + int(i[1]) for i in heights]
+    temp["Inches"] = inches
+    return(temp)
