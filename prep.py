@@ -24,3 +24,30 @@ def prepared_df():
                       'CDM', 'RDM', 'RWB', 'LB', 'LCB', 'CB', 'RCB', 'RB']
     df.drop(dropped_features, axis=1)
     return df
+
+def split_work_rates():
+    df = prepared_df()
+    splits = df['Work Rate'].str.split("/ ")
+    offensive = []
+    defensive = []
+
+    for i in splits:
+        offensive.append(i[0])
+        defensive.append(i[1])
+    df['Offensive Work Rate'] = offensive
+    df['Defensive Work Rate'] = defensive
+    return df
+
+def fix_workrate(row, pos):
+    if row[pos + ' Work Rate'] == 'Low':
+        return 0
+    elif row[pos + ' Work Rate'] == 'Medium':
+        return 1
+    elif row[pos + ' Work Rate'] == 'High':
+        return 2
+
+def enum_workrate():
+    df = split_work_rates()
+    df['Enum Defensive Work Rate'] = df.apply(lambda row: fix_workrate(row, 'Defensive'), axis=1)
+    df['Enum Offensive Work Rate'] = df.apply(lambda row: fix_workrate(row, 'Offensive'), axis=1)
+    print(df)
