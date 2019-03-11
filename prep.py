@@ -10,6 +10,7 @@ from sklearn.model_selection import train_test_split # splitting data
 from sklearn.neighbors import KNeighborsRegressor    # regressor
 from sklearn.model_selection import GridSearchCV     # for grid search
 from sklearn.pipeline import make_pipeline           # for making pipelines
+from datetime import datetime                        # for converting string into datetime type
 
 def prepared_df():
     # Data Preparation and Cleaning
@@ -30,6 +31,7 @@ def prepared_df():
     df = power_foot(df)
     df = enum_nationality(df)
     df = enum_club(df)
+    df = apply_difference(df)
     return df
 
 def prepare_heights(temp):
@@ -146,3 +148,17 @@ def enum_club(df):
     df['num_club'] = df.apply(lambda row: get_num_str(row, n_idx, 'Club'), axis=1)
     df = df.drop('Club', axis=1)
     return df
+
+
+def months_date_joined(row):
+    datetime_object = datetime.strptime(row.Joined, '%b %d, %Y')
+    today = datetime.strptime('Mar 11, 2019', '%b %d, %Y')
+    difference = today - datetime_object
+    return difference.days
+
+def apply_difference(df):
+    df['Days_at_Club'] = df.apply(lambda row: months_date_joined(row), axis=1)
+    df = df.drop('Joined', axis=1)
+    return df
+
+
