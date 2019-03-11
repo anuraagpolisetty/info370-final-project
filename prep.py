@@ -18,7 +18,7 @@ def prepared_df():
     dropped_features=['Club Logo', 'Flag', 'Photo', 'Name', 'Special', 'Body Type', 
                       'Real Face', 'Loaned From','LS', 'ST', 'RS', 'LW', 'LF', 'CF', 'RF', 'RW',
                       'LAM', 'CAM', 'RAM', 'LM', 'LCM', 'CM', 'RCM', 'RM', 'LWB', 'LDM',
-                      'CDM', 'RDM', 'RWB', 'LB', 'LCB', 'CB', 'RCB', 'RB']
+                      'CDM', 'RDM', 'RWB', 'LB', 'LCB', 'CB', 'RCB', 'RB', 'Release Clause']
     df = df.drop(dropped_features, axis=1)
     df = df.dropna()
     df = prepare_heights(df)
@@ -33,7 +33,8 @@ def prepared_df():
 def prepare_heights(temp):
     heights = temp['Height'].str.split("\'")
     inches = [12 * int(i[0]) + int(i[1]) for i in heights]
-    temp["Inches"] = inches
+    temp['Inches'] = inches
+    temp = temp.drop('Height', axis=1)
     return(temp)
     
 def fix_pos(row):
@@ -76,12 +77,15 @@ def fix_workrate(row, pos):
         return 2
 
 def enum_workrate(df):
-    df['Enum Defensive Work Rate'] = df.apply(lambda row: fix_workrate(row, 'Defensive'), axis=1)
-    df['Enum Offensive Work Rate'] = df.apply(lambda row: fix_workrate(row, 'Offensive'), axis=1)
+    df['enum_d_work_rate'] = df.apply(lambda row: fix_workrate(row, 'Defensive'), axis=1)
+    df['enum_o_work_rate'] = df.apply(lambda row: fix_workrate(row, 'Offensive'), axis=1)
 
+    df = df.drop(['Offensive Work Rate', 'Defensive Work Rate', 'Work Rate'], axis=1)
     return df
 
 def fix_value(row, col):
+    if row[col] == '€0':
+        return 0
     val = float(row[col][1:-1])
     if row[col].endswith('M'):
         return val*1000
@@ -91,8 +95,8 @@ def fix_value(row, col):
 def enum_financials(df):
     df['norm_wage'] = df.apply (lambda row: fix_value(row, 'Wage'), axis=1)
     df['norm_value'] = df.apply (lambda row: fix_value(row, 'Value'), axis=1)
-    df['norm_release'] = df.apply (lambda row: fix_value(row, 'Release Clause'), axis=1)
-    df = df.drop(['Wage', 'Value', 'Release Clause'], axis=1)
+    # df['norm_release'] = df.apply (lambda row: fix_value(row, 'Release Clause'), axis=1)
+    df = df.drop(['Wage', 'Value'], axis=1)
     return df
 
 def sum_stats(row):
@@ -115,4 +119,5 @@ def total_stats(df):
 
 def power_foot(df):
     df['power_foot_num'] = np.where(df['Preferred Foot'] == 'Right', 0, 1)
+    df = df.drop('Preferred Foot', axis=1)
     return df
