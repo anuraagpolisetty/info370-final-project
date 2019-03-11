@@ -25,6 +25,13 @@ def prepared_df():
     df = df.drop(dropped_features, axis=1)
     return df
 
+def prepare_heights():
+    temp = prepared_df()
+    heights = temp['Height'].str.split("\'")
+    inches = [12 * int(i[0]) + int(i[1]) for i in heights]
+    temp["Inches"] = inches
+    return(temp)
+    
 def fix_pos(row):
     pos = row['Position']
     forward = ['RS', 'LS', 'CF', 'RF', 'LF', 'ST', 'RW', 'LW']
