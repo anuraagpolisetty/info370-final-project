@@ -27,6 +27,7 @@ def prepared_df():
     df = enum_workrate(df)
     df = enum_financials(df)
     df = total_stats(df)
+    df = power_foot(df)
     return df
 
 def prepare_heights(temp):
@@ -110,4 +111,8 @@ def sum_stats(row):
 
 def total_stats(df):
     df['total_stats'] = df.apply(lambda row: sum_stats(row), axis=1)
+    return df
+
+def power_foot(df):
+    df['power_foot_num'] = np.where(df['Preferred Foot'] == 'Right', 0, 1)
     return df
