@@ -11,15 +11,16 @@ from sklearn.neighbors import KNeighborsRegressor    # regressor
 from sklearn.model_selection import GridSearchCV     # for grid search
 from sklearn.pipeline import make_pipeline           # for making pipelines
 
+def prepared_df():
+    # Data Preparation and Cleaning
+    df = pd.read_csv('data.csv', index_col=0)
 
-# Data Preparation and Cleaning
-df = pd.read_csv('data.csv', index_col=0)
+    df = df.fillna(method='ffill')
+    df.head()
 
-df = df.fillna(method='ffill')
-df.head()
-
-dropped_features=['Club Logo', 'Flag', 'Photo', 'Name', 'Special', 'Body Type', 
-                  'Real Face', 'Loaned From','LS', 'ST', 'RS', 'LW', 'LF', 'CF', 'RF', 'RW',
-                  'LAM', 'CAM', 'RAM', 'LM', 'LCM', 'CM', 'RCM', 'RM', 'LWB', 'LDM',
-                  'CDM', 'RDM', 'RWB', 'LB', 'LCB', 'CB', 'RCB', 'RB']
-df.drop(dropped_features, axis=1)
+    dropped_features=['Club Logo', 'Flag', 'Photo', 'Name', 'Special', 'Body Type', 
+                      'Real Face', 'Loaned From','LS', 'ST', 'RS', 'LW', 'LF', 'CF', 'RF', 'RW',
+                      'LAM', 'CAM', 'RAM', 'LM', 'LCM', 'CM', 'RCM', 'RM', 'LWB', 'LDM',
+                      'CDM', 'RDM', 'RWB', 'LB', 'LCB', 'CB', 'RCB', 'RB']
+    df.drop(dropped_features, axis=1)
+    return df
