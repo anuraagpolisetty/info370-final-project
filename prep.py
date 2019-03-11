@@ -26,6 +26,7 @@ def prepared_df():
     df = split_work_rates(df)
     df = enum_workrate(df)
     df = enum_financials(df)
+    df = total_stats(df)
     return df
 
 def prepare_heights(temp):
@@ -91,4 +92,22 @@ def enum_financials(df):
     df['norm_value'] = df.apply (lambda row: fix_value(row, 'Value'), axis=1)
     df['norm_release'] = df.apply (lambda row: fix_value(row, 'Release Clause'), axis=1)
     df = df.drop(['Wage', 'Value', 'Release Clause'], axis=1)
+    return df
+
+def sum_stats(row):
+    player_cols = ['Crossing', 'Finishing',
+       'HeadingAccuracy', 'ShortPassing', 'Volleys', 'Dribbling', 'Curve',
+       'FKAccuracy', 'LongPassing', 'BallControl', 'Acceleration',
+       'SprintSpeed', 'Agility', 'Reactions', 'Balance', 'ShotPower',
+       'Jumping', 'Stamina', 'Strength', 'LongShots', 'Aggression',
+       'Interceptions', 'Positioning', 'Vision', 'Penalties', 'Composure',
+       'Marking', 'StandingTackle', 'SlidingTackle']
+    gk_cols = ['GKDiving', 'GKHandling', 'GKKicking', 'GKPositioning', 'GKReflexes']
+    if(row['num_position'] == 0):
+        return row[gk_cols].sum()
+    else:
+        return row[player_cols].sum()
+
+def total_stats(df):
+    df['total_stats'] = df.apply(lambda row: sum_stats(row), axis=1)
     return df
