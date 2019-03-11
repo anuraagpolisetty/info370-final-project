@@ -44,6 +44,7 @@ def enum_position():
     df = df.drop('Position', axis=1)
     return df
 
+
 def split_work_rates():
     df = prepared_df()
     splits = df['Work Rate'].str.split("/ ")
@@ -69,5 +70,5 @@ def enum_workrate():
     df = split_work_rates()
     df['Enum Defensive Work Rate'] = df.apply(lambda row: fix_workrate(row, 'Defensive'), axis=1)
     df['Enum Offensive Work Rate'] = df.apply(lambda row: fix_workrate(row, 'Offensive'), axis=1)
-    print(df)
 
+    print(df)
