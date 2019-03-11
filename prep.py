@@ -22,5 +22,24 @@ def prepared_df():
                       'Real Face', 'Loaned From','LS', 'ST', 'RS', 'LW', 'LF', 'CF', 'RF', 'RW',
                       'LAM', 'CAM', 'RAM', 'LM', 'LCM', 'CM', 'RCM', 'RM', 'LWB', 'LDM',
                       'CDM', 'RDM', 'RWB', 'LB', 'LCB', 'CB', 'RCB', 'RB']
-    df.drop(dropped_features, axis=1)
+    df = df.drop(dropped_features, axis=1)
+    return df
+
+def fix_pos(row):
+    pos = row['Position']
+    forward = ['RS', 'LS', 'CF', 'RF', 'LF', 'ST', 'RW', 'LW']
+    if pos in forward:
+        return 3
+    elif pos.endswith('M'):
+        return 2
+    elif pos.endswith('B'):
+        return 1
+    elif pos == 'GK':
+        return 0
+    
+
+def enum_position():
+    df = prepared_df()
+    df['num_position'] = df.apply (lambda row: fix_pos(row), axis=1)
+    df = df.drop('Position', axis=1)
     return df
