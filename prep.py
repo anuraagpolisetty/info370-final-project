@@ -32,6 +32,7 @@ def prepared_df():
     df = enum_nationality(df)
     df = enum_club(df)
     df = apply_difference(df)
+    df = enum_weights(df)
     return df
 
 def prepare_heights(temp):
@@ -161,4 +162,9 @@ def apply_difference(df):
     df = df.drop('Joined', axis=1)
     return df
 
+def enum_weights(df):
+    weights = df['Weight'].str[0:-3].astype(int)
+    df['enum_weights'] = weights
+    df = df.drop('Weight', axis=1)
+    return df
 
