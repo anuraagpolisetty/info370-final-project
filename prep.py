@@ -25,6 +25,7 @@ def prepared_df():
     df = enum_position(df)
     df = split_work_rates(df)
     df = enum_workrate(df)
+    df = enum_financials(df)
     return df
 
 def prepare_heights(temp):
@@ -76,4 +77,18 @@ def enum_workrate(df):
     df['Enum Defensive Work Rate'] = df.apply(lambda row: fix_workrate(row, 'Defensive'), axis=1)
     df['Enum Offensive Work Rate'] = df.apply(lambda row: fix_workrate(row, 'Offensive'), axis=1)
 
+    return df
+
+def fix_value(row, col):
+    val = float(row[col][1:-1])
+    if row[col].endswith('M'):
+        return val*1000
+    elif row[col].endswith('K'):
+        return val
+
+def enum_financials(df):
+    df['norm_wage'] = df.apply (lambda row: fix_value(row, 'Wage'), axis=1)
+    df['norm_value'] = df.apply (lambda row: fix_value(row, 'Value'), axis=1)
+    df['norm_release'] = df.apply (lambda row: fix_value(row, 'Release Clause'), axis=1)
+    df = df.drop(['Wage', 'Value', 'Release Clause'], axis=1)
     return df
