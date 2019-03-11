@@ -15,18 +15,19 @@ def prepared_df():
     # Data Preparation and Cleaning
     df = pd.read_csv('data.csv', index_col=0)
 
-    df = df.fillna(method='ffill')
-    df.head()
-
     dropped_features=['Club Logo', 'Flag', 'Photo', 'Name', 'Special', 'Body Type', 
                       'Real Face', 'Loaned From','LS', 'ST', 'RS', 'LW', 'LF', 'CF', 'RF', 'RW',
                       'LAM', 'CAM', 'RAM', 'LM', 'LCM', 'CM', 'RCM', 'RM', 'LWB', 'LDM',
                       'CDM', 'RDM', 'RWB', 'LB', 'LCB', 'CB', 'RCB', 'RB']
     df = df.drop(dropped_features, axis=1)
+    df = df.dropna()
+    df = prepare_heights(df)
+    df = enum_position(df)
+    df = split_work_rates(df)
+    df = enum_workrate(df)
     return df
 
-def prepare_heights():
-    temp = prepared_df()
+def prepare_heights(temp):
     heights = temp['Height'].str.split("\'")
     inches = [12 * int(i[0]) + int(i[1]) for i in heights]
     temp["Inches"] = inches
@@ -45,15 +46,13 @@ def fix_pos(row):
         return 0
     
 
-def enum_position():
-    df = prepared_df()
+def enum_position(df):
     df['num_position'] = df.apply (lambda row: fix_pos(row), axis=1)
     df = df.drop('Position', axis=1)
     return df
 
 
-def split_work_rates():
-    df = prepared_df()
+def split_work_rates(df):
     splits = df['Work Rate'].str.split("/ ")
     offensive = []
     defensive = []
@@ -73,9 +72,8 @@ def fix_workrate(row, pos):
     elif row[pos + ' Work Rate'] == 'High':
         return 2
 
-def enum_workrate():
-    df = split_work_rates()
+def enum_workrate(df):
     df['Enum Defensive Work Rate'] = df.apply(lambda row: fix_workrate(row, 'Defensive'), axis=1)
     df['Enum Offensive Work Rate'] = df.apply(lambda row: fix_workrate(row, 'Offensive'), axis=1)
 
-    print(df)
+    return df
