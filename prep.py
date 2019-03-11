@@ -28,6 +28,8 @@ def prepared_df():
     df = enum_financials(df)
     df = total_stats(df)
     df = power_foot(df)
+    df = enum_nationality(df)
+    df = enum_club(df)
     return df
 
 def prepare_heights(temp):
@@ -120,4 +122,27 @@ def total_stats(df):
 def power_foot(df):
     df['power_foot_num'] = np.where(df['Preferred Foot'] == 'Right', 0, 1)
     df = df.drop('Preferred Foot', axis=1)
+    return df
+
+def string_indices(df, col):
+    n = df[col].unique()
+    nations_df = pd.DataFrame(n, columns=['value'])
+    nations_df.sort_values('value', inplace=True)
+    nations_df.reset_index(drop=True, inplace=True)
+    nations_df.reset_index(level=0, inplace=True)
+    return nations_df
+
+def get_num_str(row, n_idx, col):
+    return int(n_idx[n_idx.value == row[col]]['index'])
+
+def enum_nationality(df):
+    n_idx = string_indices(df, 'Nationality')
+    df['num_nation'] = df.apply(lambda row: get_num_str(row, n_idx, 'Nationality'), axis=1)
+    df = df.drop('Nationality', axis=1)
+    return df
+
+def enum_club(df):
+    n_idx = string_indices(df, 'Club')
+    df['num_club'] = df.apply(lambda row: get_num_str(row, n_idx, 'Club'), axis=1)
+    df = df.drop('Club', axis=1)
     return df
