@@ -29,10 +29,13 @@ def prepared_df():
     df = enum_financials(df)
     df = total_stats(df)
     df = power_foot(df)
-    df = enum_nationality(df)
-    df = enum_club(df)
     df = apply_difference(df)
     df = enum_weights(df)
+    return df
+
+def enum_strings(df):
+    df = enum_nationality(df)
+    df = enum_club(df)
     return df
 
 def prepare_heights(temp):
