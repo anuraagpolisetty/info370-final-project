@@ -114,7 +114,7 @@ def sum_stats(row):
        'Marking', 'StandingTackle', 'SlidingTackle']
     gk_cols = ['GKDiving', 'GKHandling', 'GKKicking', 'GKPositioning', 'GKReflexes']
     if(row['num_position'] == 0):
-        return row[gk_cols].sum()
+        return row[gk_cols].sum() * 5
     else:
         return row[player_cols].sum()
 
