@@ -42,7 +42,7 @@ def pipeline(feat_train, labels_train, algo, param_grid, descriptor):
     scaler = MinMaxScaler()
     kbest = SelectKBest(chi2)
     pipeline = make_pipeline(kbest, scaler, algo)
-    grid_search = GridSearchCV(pipeline, param_grid=param_grid)
+    grid_search = GridSearchCV(pipeline, param_grid=param_grid, scoring=mean_absolute_error_scorer)
 
     gsFit = grid_search.fit(train_features_small, train_outcome_small['norm_wage'].tolist())
 
