@@ -31,8 +31,8 @@ from prep import *
 
 mean_absolute_error_scorer = make_scorer(mean_absolute_error, greater_is_better=False)
 
-
 def pipeline(feat_train, labels_train, algo, param_grid, descriptor):
+    print('    Beginning analysis for ' + descriptor)
     train_features_small, validation_features, train_outcome_small, validation_outcome = train_test_split(
         feat_train,     # features
         labels_train,   # outcome
@@ -48,9 +48,12 @@ def pipeline(feat_train, labels_train, algo, param_grid, descriptor):
 
     folds = KFold(n_splits=10, shuffle=True)
 
+    print('    Creating predictinons for ' + descriptor)
     predictions = cross_val_predict(gsFit, feat_train, labels_train, cv= folds)
+    print('    Printing predictions to CSV for ' + descriptor)
     pd.DataFrame(labels_train).join(pd.DataFrame(predictions)).to_csv('model_predictions/' + descriptor + '.csv', index=False)
 
+    print('    Scoring predictions for ' + descriptor)
     return np.mean(cross_val_score(gsFit, feat_train, labels_train, cv= folds, scoring=mean_absolute_error_scorer))
 
 print('Getting data ready...')
@@ -82,7 +85,7 @@ regressors = [
         'algo': RandomForestRegressor(), 
         'param_grid': {
             'selectkbest__k': [2,4,10,20,numFeatures], 
-            'randomforestregressor__n_estimators':range(10, 100)
+            'randomforestregressor__n_estimators':[10, 20, 50, 75, 100]
         },
         'descriptor': 'RandomForestRegressor'
     },
